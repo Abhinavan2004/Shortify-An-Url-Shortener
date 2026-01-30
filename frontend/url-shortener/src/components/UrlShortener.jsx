@@ -1,80 +1,74 @@
 import { useState } from 'react';
 import { shortenUrl } from '../services/api';
+import '../styles/UrlShortener.css';
 
 function UrlShortener() {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setShortUrl('');
+    setCopied(false);
     setLoading(true);
 
     try {
       const response = await shortenUrl(url);
-setShortUrl(`http://localhost:8095/${response.data.shortenCode}`);
-    } catch (err) {
-      setError('Failed to shorten URL');
+      setShortUrl(`http://localhost:8095/${response.data.shortenCode}`);
+    } catch {
+      setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shortUrl);
+    setCopied(true);
+  };
+
   return (
-    <div style={styles.container}>
-      <h2>🔗 URL Shortener</h2>
+    <div className="page">
+      <div className="card">
+        <div className="logo">🔗 ShortLink</div>
+        <div className="subtitle">
+          Paste a long URL and get a short one instantly
+        </div>
 
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="url"
-          placeholder="Enter your long URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          required
-          style={styles.input}
-        />
+        <form className="form" onSubmit={handleSubmit}>
+          <input
+            className="input"
+            type="url"
+            placeholder="https://example.com"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            required
+          />
+          <button className="button" disabled={loading}>
+            {loading ? 'Shortening...' : 'Shorten'}
+          </button>
+        </form>
 
-        <button type="submit" style={styles.button}>
-          {loading ? 'Shortening...' : 'Shorten'}
-        </button>
-      </form>
+        {shortUrl && (
+          <div className="result">
+            <a href={shortUrl} target="_blank" rel="noreferrer">
+              {shortUrl}
+            </a>
+            <br />
+            <button className="copy-btn" onClick={copyToClipboard}>
+              {copied ? 'Copied!' : 'Copy'}
+            </button>
+          </div>
+        )}
 
-      {shortUrl && (
-        <p>
-          Short URL:  
-          <a href={shortUrl} target="_blank"> {shortUrl}</a>
-        </p>
-      )}
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <div className="error">{error}</div>}
+      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: '400px',
-    margin: '100px auto',
-    padding: '20px',
-    background: '#fff',
-    borderRadius: '8px',
-    boxShadow: '0 0 10px rgba(0,0,0,0.1)'
-  },
-  form: {
-    display: 'flex',
-    gap: '10px'
-  },
-  input: {
-    flex: 1,
-    padding: '10px'
-  },
-  button: {
-    padding: '10px 15px',
-    cursor: 'pointer'
-  }
-};
 
 export default UrlShortener;
