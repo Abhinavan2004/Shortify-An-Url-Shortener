@@ -1,0 +1,9 @@
+.footer {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--subtext);
+  border-top: 2px solid var(--border);
+  background: var(--card);
+}
