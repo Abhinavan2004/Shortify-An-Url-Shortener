@@ -4,9 +4,9 @@ import com.abhinav.URL_SHORTNER_APP.dto.ShortenUrlRequestDto;
 import com.abhinav.URL_SHORTNER_APP.dto.ShortenUrlResponseDto;
 import com.abhinav.URL_SHORTNER_APP.service.Url_service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Url_Controller {
@@ -18,6 +18,13 @@ public class Url_Controller {
     public ShortenUrlResponseDto Url_Shorten(@RequestBody ShortenUrlRequestDto requestDto){
 
         return url_service.Url_Shorten(requestDto);
+    }
+
+    @GetMapping("/{shortenCode}")
+    public ResponseEntity<Void> getRedirectionUri(@PathVariable String shortenCode){
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY.value())
+                .location(url_service.getRedirectionUri(shortenCode))
+                        .build();
     }
 
 }

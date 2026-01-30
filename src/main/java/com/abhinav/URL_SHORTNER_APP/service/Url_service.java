@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class Url_service {
@@ -19,24 +22,23 @@ public class Url_service {
     @Autowired
     private final UrlUtils urlUtils;
     @Autowired
-    private final Url_Repo repo ;
+    private final Url_Repo repo;
 
-    public ShortenUrlResponseDto Url_Shorten(ShortenUrlRequestDto requestDto){
-        String url = requestDto.getUrl() ;
-        try{
+    public ShortenUrlResponseDto Url_Shorten(ShortenUrlRequestDto requestDto) {
+        String url = requestDto.getUrl();
+        try {
             boolean isValid = urlUtils.isValid(url);
-            if(!isValid){
+            if (!isValid) {
                 throw new RuntimeException("URL is Not Valid1!!!");
             }
 
-            String ShortenCode = "TODO" ;
+            String ShortenCode = RandomStringUtils.randomAlphanumeric(8);
             Url_entity url_entity = new Url_entity();
             url_entity.setUrl(url);
             url_entity.setShortenCode(ShortenCode);
             repo.save(url_entity);
             return ShortenUrlResponseDto.builder().ShortenCode(ShortenCode).build();
-        }
-        catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             String ShortenCode = RandomStringUtils.randomAlphanumeric(8);
             Url_entity url_entity = new Url_entity();
             url_entity.setUrl(url);
@@ -44,5 +46,13 @@ public class Url_service {
             repo.save(url_entity);
             return ShortenUrlResponseDto.builder().ShortenCode(ShortenCode).build();
         }
+    }
+
+    public URI getRedirectionUri(String shortenCode) {
+        String urlToBePassed = repo.findByShortenCode(shortenCode)
+                .map(Url_entity::getUrl)
+                .orElse("/");
+
+        return URI.create(urlToBePassed);
     }
 }
