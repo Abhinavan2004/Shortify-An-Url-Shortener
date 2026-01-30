@@ -1,5 +1,7 @@
 package com.abhinav.URL_SHORTNER_APP.service;
 
+import com.abhinav.URL_SHORTNER_APP.dto.ShortenUrlRequestDto;
+import com.abhinav.URL_SHORTNER_APP.dto.ShortenUrlResponseDto;
 import com.abhinav.URL_SHORTNER_APP.entity.Url_entity;
 import com.abhinav.URL_SHORTNER_APP.repository.Url_Repo;
 import com.abhinav.URL_SHORTNER_APP.utils.UrlUtils;
@@ -16,7 +18,8 @@ public class Url_service {
     @Autowired
     private final Url_Repo repo ;
 
-    public String Url_Shorten(String url){
+    public ShortenUrlResponseDto Url_Shorten(ShortenUrlRequestDto requestDto){
+        String url = requestDto.getUrl() ;
         boolean isValid = urlUtils.isValid(url);
         if(!isValid){
             throw new RuntimeException("URL is Not Valid1!!!");
@@ -27,6 +30,6 @@ public class Url_service {
         url_entity.setUrl(url);
         url_entity.setShortenCode(ShortenCode);
         repo.save(url_entity);
-        return null ;
+        return ShortenUrlResponseDto.builder().ShortenCode(ShortenCode).build();
     }
 }

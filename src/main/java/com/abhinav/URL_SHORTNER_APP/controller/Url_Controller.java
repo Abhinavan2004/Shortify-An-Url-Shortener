@@ -1,5 +1,7 @@
 package com.abhinav.URL_SHORTNER_APP.controller;
 
+import com.abhinav.URL_SHORTNER_APP.dto.ShortenUrlRequestDto;
+import com.abhinav.URL_SHORTNER_APP.dto.ShortenUrlResponseDto;
 import com.abhinav.URL_SHORTNER_APP.service.Url_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,9 +15,9 @@ public class Url_Controller {
     private Url_service url_service;
 
     @PostMapping("/shorten")
-    public String Url_Shorten(@RequestBody String url){
+    public ShortenUrlResponseDto Url_Shorten(@RequestBody ShortenUrlRequestDto requestDto){
 
-        return url_service.Url_Shorten(url);
+        return url_service.Url_Shorten(requestDto);
     }
 
 }
