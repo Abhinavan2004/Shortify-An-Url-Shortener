@@ -19,7 +19,7 @@ public class Url_entity {
     @Column(name="Actual Url")
     private String url;
 
-    @Column(name="Shorten Code")
+    @Column(unique = true)
     private String shortenCode;
 
 }
