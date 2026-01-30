@@ -1,19 +1,27 @@
 package com.abhinav.URL_SHORTNER_APP.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Data
+@Component
 @RequiredArgsConstructor
 @NoArgsConstructor
+@Table(name="URL_SHORTENER_APP_TABLE")
 public class Url_entity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id ;
+
+    @Column(name="Actual Url")
+    private String url;
+
+    @Column(name="Shorten Code")
+    private String shortenCode;
+
 }
