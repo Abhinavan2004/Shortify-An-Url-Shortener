@@ -10,10 +10,8 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @RequiredArgsConstructor
-@NoArgsConstructor
 @Table(name="URL_SHORTENER_APP_TABLE")
 public class Url_entity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
