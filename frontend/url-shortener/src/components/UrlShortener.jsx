@@ -15,7 +15,7 @@ function UrlShortener() {
 
     try {
       const response = await shortenUrl(url);
-      setShortUrl(`http://localhost:8095/${response.data.shortenCode}`);
+setShortUrl(`http://localhost:8095/${response.data.shortenCode}`);
     } catch (err) {
       setError('Failed to shorten URL');
     } finally {

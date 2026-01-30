@@ -18,7 +18,6 @@ public class Url_Controller {
 
     @PostMapping("/shorten")
     public ShortenUrlResponseDto Url_Shorten(@RequestBody ShortenUrlRequestDto requestDto){
-
         return url_service.Url_Shorten(requestDto);
     }
 
