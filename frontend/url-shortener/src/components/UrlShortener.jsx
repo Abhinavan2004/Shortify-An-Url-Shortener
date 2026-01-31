@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { shortenUrl } from '../services/api';
 import '../styles/UrlShortener.css';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function UrlShortener() {
   const [url, setUrl] = useState('');
@@ -14,7 +15,7 @@ function UrlShortener() {
     setCopied(false);
 
     const res = await shortenUrl(url);
-    setShortUrl(`http://localhost:8095/${res.data.shortenCode}`);
+    setShortUrl(`${API_BASE_URL}${res.data.shortenCode}`);
     setLoading(false);
   };
 
