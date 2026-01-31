@@ -15,7 +15,7 @@ function UrlShortener() {
     setCopied(false);
 
     const res = await shortenUrl(url);
-    setShortUrl(`${API_BASE_URL}${res.data.shortenCode}`);
+    setShortUrl(`${API_BASE_URL}/api/${res.data.shortenCode}`);
     setLoading(false);
   };
 
